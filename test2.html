@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+  <div id="modal" :class="classif" v-on:click.self="incrementClose">
+    <open v-on:increment="incrementOpen()"></open>
+    <div class="window" v-show="windowif">
+      <div class="content">
+        <p>モーダルウィンドウ</p>
+        <close v-on:increment="incrementClose"></close>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  Vue.component("open",{
+    template:`
+      <button @click="open">開く</button>
+    `,
+    methods:{
+      open(){
+        this.$emit('increment')
+      }
+    }
+  })
+    Vue.component("close", {
+      template: `
+      <button @click="close">閉じる</button>
+    `,
+      methods: {
+        close() {
+          this.$emit('increment')
+        }
+      }
+    })
+  const vm = new Vue({
+    el:"#modal",
+    data:{
+      key:"off"
+    },
+    computed:{
+      windowif:function(){
+        if(this.key=="on"){
+          return true
+        }else{
+          return false
+        }
+      },
+      classif:function(){
+        if(this.key=="on"){
+          return "modal"
+        }else{
+          return ""
+        }
+      }
+    },
+    methods:{
+      incrementOpen(){
+        this.key = "on"        
+      },
+      incrementClose(){
+        this.key = "off"
+      }
+    }
+  })
+</script>
+<style>
+  html{
+    height: 100%;
+  }
+  body{
+     height: 100%;
+     margin: 0px;
+  }
+  .modal{
+    height: 100%;
+    background-color: gray;
+    margin: none;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  }
+  .window{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 30%;
+    background-color: white;
+  }
+  .content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+  }
+  /* p{ */
+    /* text-align: center; */
+  /* } */
+  /* .button{ */
+    /* margin: auto; */
+  /* } */
+</style>
+</html>
